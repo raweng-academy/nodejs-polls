@@ -1,15 +1,18 @@
-   // routes/index.js
-   const express = require('express')
-   var app = express()
-   const PollController = require("../controllers/pollController")
-   const pollController = new PollController()
+const express = require('express')
+var app = express()
+const PollController = require("../controllers/pollController")
+const pollController = new PollController()
 
-   app.post('/', pollController.create);
+app.post('/', pollController.create);
 
-   app.get('/:id', pollController.show);
+app.get('/random', pollController.random);
 
-   app.get('/', pollController.list);
+app.get('/:id', pollController.show);
 
-   app.post('/:id/vote', pollController.vote);
+app.get('/', pollController.list);
 
-   module.exports = app;
+app.post('/:id/vote', pollController.vote);
+
+
+
+module.exports = app;

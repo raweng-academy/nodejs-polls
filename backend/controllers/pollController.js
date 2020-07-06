@@ -1,4 +1,3 @@
-// controllers/pollController.js
 const PollService = require("../services/pollService")
 
 class PollController {
@@ -25,6 +24,11 @@ class PollController {
 
     list = async (req, res) => {
         const response =  await this.pollService.all()
+        res.status(200).json(response)
+    }
+
+    random = async(req, res) => {
+        const response = await this.pollService.random()
         res.status(200).json(response)
     }
 

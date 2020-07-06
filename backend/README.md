@@ -5,91 +5,105 @@
 - Visual studio code. with command line `code` enabled.
 - Create Account with mongodb atlas and create a cluster
 - Github account setup with ssh keys added in account.
+- Postman client
 
 **npm** is a node package manager for nodejs.
 Allows you to download and install node libraries in project.
 
 
 ###  1. Create project dir.
-    <!-- Make directory -->
+```bash    
+    # Make directory
     mkdir nodejs-polls
-
-    <!-- change directory -->
-    cd nodejs-polls
-
-### Setup git
-    git init
-
-    npx create-react-app web
-
-    mkdir backend
-    cd backend
-
-### setup app server framework.
-    <!-- make project nodejs ready -->
-    npm init -y
     
-    <!-- install web server and ODM -->
+    # change directory
+    cd nodejs-polls
+```
+### Setup git
+```bash    
+    git init
+```
+
+### Create web directory
+```bash    
+    npx create-react-app web
+    cd web 
+```
+### Setup app server framework.
+```bash    
+    # make project nodejs ready
+    npm init -y
+
+    # install web server and ODM
     npm install -S express mongoose
 
-    <!-- Open the project in Vs code IDE  -->
+    # Open the project in Vs code IDE 
     code .
+```
 
+### Create app server
+```javascript
+    // server.js
+    const express = require('express');
+    const app = express();
 
-###  create file server.js with below code
-        // server.js
-        const express = require('express');
-        const app = express();
+    const PORT = process.env.PORT || 5000;
 
-        const PORT = process.env.PORT || 5000;
+    // configure body parser for AJAX requests
+    app.use(express.urlencoded({ extended: true }));
+    app.use(express.json());
 
-        // configure body parser for AJAX requests
-        app.use(express.urlencoded({ extended: true }));
-        app.use(express.json());
+    // routes
+    app.get('/', (req, res) => {
+        res.send('Hello from Nodejs');
+    });
 
-        // routes
-        app.get('/', (req, res) => {
-            res.send('Hello from Nodejs');
-        });
-
-        // Bootstrap server
-        app.listen(PORT, () => {
-            console.log(`Server listening on port ${PORT}.`);
-        });
-    ```
+    // Bootstrap server
+    app.listen(PORT, () => {
+        console.log(`Server listening on port ${PORT}.`);
+    });
+```
 
 ###  run the project 
+```bash   
     npm start
-    open localhost:5000 in browser
-    <!-- You should see Hello from Nodejs -->
-
+    # open localhost:5000 in browser
+ 
+    # You should see Hello from Nodejs
+```
 ###  install nodemon  
+```bash   
     npm install -g nodemon
-
+```
 ###  verify if the prject is running propertly
     Go to localhost:3000
 
 ### add env support
-    <!-- install .env support -->
+```bash    
+    # install .env support
     npm install dotenv
 
-    <!-- add below to server.js imports -->
+    # add below to server.js imports
     require('dotenv').config() 
 
     touch .env       
+```
 
 ### initalize mongoose ODM
-Add mongodb URI to .env
+```bash    
+
+    # Add mongodb URI to .env
 
     // .env
     MONGO_DB=mongodb://localhost:27017    
-
-    <!-- create configs directory -->
+    
+    #  create configs directory
     mkdir config
-
-    <!-- Create file config/db.js -->
+    # Create file config/db.js
     touch config/db.js
+```    
 
+```javascript
     // db.js 
     const mongoose = require('mongoose');
     const connection = mongoose.connection;
@@ -102,6 +116,7 @@ Add mongodb URI to .env
         "MongoDB database connection established successfully");
     })
     module.exports = mongoose;
+```
 
 ### create projects dir
     mkdir models 
@@ -112,7 +127,7 @@ Add mongodb URI to .env
 ###  add database models    
     // create models/poll.js
     
-    <!-- paste the below code -->
+```javascript    
     // poll.js
     const mongoose = require('mongoose');
     const Schema = mongoose.Schema;
@@ -147,10 +162,10 @@ Add mongodb URI to .env
         Poll, 
         Choice
     };
-
+```
 ###  add routes
+```javascript
     // routes/index.js
-
     const express = require('express')
     var app = express()
     const PollController = require("../controllers/pollController")
@@ -165,8 +180,9 @@ Add mongodb URI to .env
     app.post('/:id/vote', pollController.vote);
 
     module.exports = app;
-
+```
 ###  add controllers
+```javascript
     // controllers/pollController.js
 
     const PollService = require("../services/pollService")
@@ -205,9 +221,11 @@ Add mongodb URI to .env
     }
 
     module.exports = PollController;
+```
 
 ###  add services
-    services/pollServices.js
+```javascript
+    // services/pollServices.js
     const {Poll, Choice} = require("../models/poll")
 
     class PollService {
@@ -246,13 +264,17 @@ Add mongodb URI to .env
     }
 
     module.exports = PollService;
-
+```
 ###  Enable cors   
-    <!-- install cors library -->
+```bash    
+    # install cors library
     npm install -save cors
+```
 
-    <!-- Add this to server.js -->
+```javascript    
+    // Add this to server.js
     const cors = require('cors');
+
     // enable cors
     app.use(cors(
         {
@@ -262,21 +284,17 @@ Add mongodb URI to .env
             "optionsSuccessStatus": 204
         }
     ))
-
+```
 ### deploy to heroku
-    <!-- Deploy backend -->
+<!-- 
+The day I will get committed in a relationship, I would be thinking - "Commit toh kar rha hoon, abhi message kya daaloo" 
+-->
+```bash    
+    # Deploy backend
     cd backend
     git init
     git add . -A 
     git commit -m "Push to heroku"
     heroku config:set MONGODB="URL"
-    git push heroku master
-    
-    <!-- Deploy web -->
-    cd web
-    git init
-    git add . -A 
-    git commit -m "Push to heroku"
-    heroku create <ANYAppNAME> --buildpack mars/create-react-app
-    heroku config:set REACT_APP_BACKEND=""    
-    git push heroku master
+    git push heroku master    
+```
